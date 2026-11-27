@@ -17,6 +17,7 @@ namespace MohawkGame2D
         Texture2D graphic5 = Graphics.LoadTexture("C:\\Users\\epicg\\Downloads\\2DGameAssignment\\Running4.png");
         Texture2D graphic6 = Graphics.LoadTexture("C:\\Users\\epicg\\Downloads\\2DGameAssignment\\Running5.png");
         Texture2D graphic7 = Graphics.LoadTexture("C:\\Users\\epicg\\Downloads\\2DGameAssignment\\Running6.png");
+        Texture2D graphic8 = Graphics.LoadTexture("C:\\Users\\epicg\\Downloads\\2DGameAssignment\\Present.png");
 
         static float floorHeight = 400f;
         Vector2 playerposition = new Vector2(50f, floorHeight);
@@ -39,8 +40,8 @@ namespace MohawkGame2D
         /// </summary>
         public void Setup()
         {
-        Window.SetSize(800, 600);
-        Window.ClearBackground(0);
+            Window.SetSize(800, 600);
+            Window.ClearBackground(0);
 
             for (int i = 0; i < floor.Length; i++)
             {
@@ -58,10 +59,53 @@ namespace MohawkGame2D
         /// </summary>
         public void Update()
         {
-            
+            Window.ClearBackground(0);
+
+            if (playerposition.Y < floorHeight)
+            {
+                playerposition.Y += gravity;
+            }
+            else
+            {
+                playerposition.Y = floorHeight;
+            }
+
+            if (Input.IsKeyboardKeyPressed(KeyboardKey.Space) && playerposition.Y == floorHeight)
+            {
+                playerposition.Y -= jumpheight / jumptime;
+                jumphtimer = jumptime;
+            }
+
+            if (jumphtimer > 0)
+            {
+                playerposition.Y -= jumpheight / jumptime;
+                jumphtimer--;
+            }
+
+            position += speed;
+
+            foreach (int f in floor)
+            {
+                Draw.FillColor = Color.White;
+                Draw.Rectangle(f - floorHeight, 400f, 10f, 10f);
+            }
+
+            foreach (int o in obsticle)
+            {
+                Graphics.Draw(graphic8, o - position, 320f - obstacleradius);
+
+                if (Vector2.Distance(playerposition, new Vector2(o - position, 350f - obstacleradius)) < obstacleradius)
+                {
+                    Window.ClearBackground(0);
+                    Draw.FillColor = Color.Red;
+                    
+                }
+                
+            }
+
 
 
         }
-    }
 
+    }
 }
