@@ -22,15 +22,16 @@ namespace MohawkGame2D
         Texture2D graphic7 = Graphics.LoadTexture("C:\\Users\\epicg\\Downloads\\2DGameAssignment\\Running6.png");
         Texture2D graphic8 = Graphics.LoadTexture("C:\\Users\\epicg\\Downloads\\2DGameAssignment\\Present.png");
         Texture2D graphic9 = Graphics.LoadTexture("C:\\Users\\epicg\\Downloads\\2DGameAssignment\\Jump.png");
+        Font font1 = Text.LoadFont("C:\\Users\\epicg\\Downloads\\2DGameAssignment\\JimNightshade\\JimNightshade-Regular.ttf");
 
         static float floorHeight = 400f;
         Vector2 playerposition = new Vector2(400f, floorHeight);
         float position = 0f;
         float speed = 3f;
-        float jumptime = 20;
+        float jumptime = 35;
         float jumphtimer = 0;
-        float jumpheight = 140f;
-        float gravity = 2.7f;
+        float jumpheight = 200f;
+        float gravity = 1.7f;
 
         int floorOffset = 10;
         int[] floor = new int[500];
@@ -70,22 +71,25 @@ namespace MohawkGame2D
             if (playerposition.Y < floorHeight)
             {
                 playerposition.Y += gravity;
+                jumphtimer--; Graphics.Draw(graphic9, playerposition.X - 280f, playerposition.Y - 80f);
             }
             else
             {
-                playerposition.Y = floorHeight;
+                playerposition.Y = floorHeight; 
+                Graphics.Draw(graphic2, playerposition.X - 280f, playerposition.Y - 80f);
             }
 
             if (Input.IsKeyboardKeyPressed(KeyboardKey.Space) && playerposition.Y == floorHeight)
             {
                 playerposition.Y -= jumpheight / jumptime;
-                jumphtimer = jumptime; 
+                jumphtimer = jumptime;
             }
 
             if (jumphtimer > 0)
             {
                 playerposition.Y -= jumpheight / jumptime;
-                jumphtimer--; Graphics.Draw(graphic9, playerposition.X - 280f, playerposition.Y - 80f);
+                jumphtimer--; 
+                Graphics.Draw(graphic9, playerposition.X - 280f, playerposition.Y - 80f);
             }
 
             position += speed;
@@ -99,7 +103,7 @@ namespace MohawkGame2D
             foreach (int o in obsticle)
             {
                 Graphics.Draw(graphic8, o - position, 350f - obstacleradius);
-                
+
                 // Check for collision with the player
                 if (Vector2.Distance(playerposition, new Vector2(o - position, 390f + obstacleradius)) < obstacleradius + 20f)
                 {
@@ -107,16 +111,18 @@ namespace MohawkGame2D
                     playerposition = new Vector2(400f, floorHeight);
                     position = 50f;
                 }
+
                 
                 {
-                    Graphics.Draw(graphic2, playerposition.X - 280f, playerposition.Y - 80f);
-
+                    Text.Color = Color.White;
+                    Text.Font = font1;
+                    Text.Draw($"Score: {position}", 0, 180);
                 }
-
-
-
             }
-
         }
     }
 }
+            
+
+        
+    
